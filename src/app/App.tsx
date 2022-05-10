@@ -3,14 +3,14 @@ import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 
 import { store } from '@app/store';
-import Home from '@modules/home/Home';
+import AppContainer from '@modules/layout/Container';
 import theme from '@style/theme';
 
 const App: React.FC = () => {
   return (
     <ReduxProvider store={store}>
       <ChakraProvider theme={theme}>
-        <Home />
+        <AppContainer />
       </ChakraProvider>
     </ReduxProvider>
   );

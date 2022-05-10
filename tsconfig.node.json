@@ -6,5 +6,5 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "include": ["vite.config.ts", "package.json"]
+  "include": ["vite.config.ts", "package.json", "manifest.config.ts"]
 }
