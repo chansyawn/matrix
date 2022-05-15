@@ -4,7 +4,7 @@ import SearchConfigActivatedEngine from '@modules/search/SearchConfigActivatedEn
 import SearchConfigCustomEngine from '@modules/search/SearchConfigCustomEngine';
 import SearchConfigUnActivatedEngine from '@modules/search/SearchConfigUnActivatedEngine';
 
-const SearchPanel = () => {
+const SearchConfigCard = () => {
   return (
     <Stack>
       <SearchConfigActivatedEngine />
@@ -14,4 +14,4 @@ const SearchPanel = () => {
   );
 };
 
-export default SearchPanel;
+export default SearchConfigCard;

@@ -6,7 +6,6 @@ import {
   ModalOverlay,
   Tab,
   TabList,
-  TabPanel,
   TabPanels,
   Tabs,
   useBreakpointValue,
@@ -15,7 +14,8 @@ import {
 } from '@chakra-ui/react';
 import { FiSettings } from 'react-icons/fi';
 
-import SearchPanel from '@modules/search/SearchConfigPanel';
+import ConfigTabPanel from '@modules/layout/ConfigTabPanel';
+import SettingPanel from '@modules/layout/SettingPanel';
 
 const Config = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -36,10 +36,16 @@ const Config = () => {
         icon={<FiSettings />}
         onClick={onOpen}
       />
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size={modalSize} scrollBehavior="inside">
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        size={modalSize}
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
-        <ModalContent>
-          <ModalBody my="4">
+        <ModalContent h="xl">
+          <ModalBody py="4">
             <Tabs variant="soft-rounded">
               <TabList>
                 <Wrap>
@@ -49,9 +55,9 @@ const Config = () => {
                 </Wrap>
               </TabList>
               <TabPanels>
-                <TabPanel px="1">
-                  <SearchPanel />
-                </TabPanel>
+                <ConfigTabPanel>
+                  <SettingPanel />
+                </ConfigTabPanel>
               </TabPanels>
             </Tabs>
           </ModalBody>
