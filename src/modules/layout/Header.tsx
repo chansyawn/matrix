@@ -1,9 +1,8 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
 
 import SearchBar from '@modules/search/SearchBar';
 
-const Header: React.FC = () => {
+const Header = () => {
   return (
     <Box mt="30vh" w="full">
       <SearchBar />

@@ -1,6 +1,8 @@
-import { CloseIcon, SearchIcon } from '@chakra-ui/icons';
 import {
+  Alert,
+  AlertIcon,
   Center,
+  Icon,
   Input,
   InputGroup,
   InputLeftElement,
@@ -11,60 +13,44 @@ import {
   PopoverTrigger,
   ScaleFade,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
-import { useDebounce } from '@common/hooks';
-import { SearchEngine } from '@common/types';
 import React, { useEffect, useRef, useState } from 'react';
+import { FiSearch, FiX } from 'react-icons/fi';
 
+import { useDebounce, useSelector } from '@common/hooks';
+import { selectActivatedSearchEngines } from '@modules/search/searchSlice';
 import SearchSuggestion from '@modules/search/SearchSuggestion';
 import { useGetSearchSuggestionQuery } from '@services/searchApi';
 
-import icon_baidu from '@assets/icons/icon_baidu.svg';
-import icon_bilibili from '@assets/icons/icon_bilibili.svg';
-import icon_bing from '@assets/icons/icon_bing.svg';
-import icon_google from '@assets/icons/icon_google.svg';
-
-const searchEngines: SearchEngine[] = [
-  {
-    name: 'Google',
-    url: 'https://www.google.com/search?q=',
-    icon: icon_google,
-  },
-  {
-    name: 'Baidu',
-    url: 'https://www.baidu.com/s?wd=',
-    icon: icon_baidu,
-  },
-  {
-    name: 'Bing',
-    url: 'https://www.bing.com/search?q=',
-    icon: icon_bing,
-  },
-  {
-    name: 'BiliBili',
-    url: 'https://search.bilibili.com/all?keyword=',
-    icon: icon_bilibili,
-  },
-];
-
-const SearchBar: React.FC = () => {
+const SearchBar = () => {
   const [searchContent, setSearchContent] = useState('');
   const [preSelectSuggestionIndex, setPreSelectSuggestionIndex] = useState(0);
   const [preSelectEngineIndex, setPreSelectEngineIndex] = useState(0);
+  const searchEngines = useSelector(selectActivatedSearchEngines);
 
+  const isAnyActivatedSearchEngine = searchEngines.length > 0;
   const isSearching = searchContent.length > 0;
   const debouncedSearchContent = useDebounce(searchContent, 200);
   const engine = searchEngines[preSelectEngineIndex];
 
-  const { data: suggestionsData, isFetching } = useGetSearchSuggestionQuery(
-    {
-      keyword: debouncedSearchContent,
-      searchEngineName: engine.name,
-    },
-    {
-      skip: !isSearching,
-    },
-  );
+  const toast = useToast();
+
+  const arrayCycle = (arr: unknown[], dir: 'forward' | 'backward') => {
+    return (pre: number) =>
+      (pre + (dir === 'forward' ? 1 : -1) + arr.length) % arr.length;
+  };
+
+  const { currentData: suggestionsData, isFetching } =
+    useGetSearchSuggestionQuery(
+      {
+        keyword: debouncedSearchContent,
+        suggestion: engine?.suggestion,
+      },
+      {
+        skip: !isSearching || !isAnyActivatedSearchEngine,
+      },
+    );
   const suggestions = [searchContent, ...(suggestionsData?.slice(0, 8) ?? [])];
 
   const {
@@ -76,40 +62,59 @@ const SearchBar: React.FC = () => {
   const inputRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = () => {
-    const url = engine.url + suggestions[preSelectSuggestionIndex];
-    window.open(url, '_self');
+    if (!isAnyActivatedSearchEngine) {
+      toast({
+        title: 'No search engine activated',
+        description: 'Please activate at least one search engine',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      const url = engine.url.replace(
+        '%s',
+        suggestions[preSelectSuggestionIndex],
+      );
+      window.open(url, '_self');
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    const allowedKeys = ['Enter', 'ArrowUp', 'ArrowDown', 'Escape', 'Tab'];
+    if (allowedKeys.includes(e.key)) {
       e.preventDefault();
-      handleSearch();
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setPreSelectSuggestionIndex(
-        (pre) => (pre + 1 + suggestions.length) % suggestions.length,
-      );
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setPreSelectSuggestionIndex(
-        (pre) => (pre - 1 + suggestions.length) % suggestions.length,
-      );
-    } else if (e.key === 'Tab') {
-      e.preventDefault();
-      if (e.shiftKey)
-        setPreSelectEngineIndex(
-          (pre) => (pre - 1 + searchEngines.length) % searchEngines.length,
-        );
-      else
-        setPreSelectEngineIndex(
-          (pre) => (pre + 1 + searchEngines.length) % searchEngines.length,
-        );
+      switch (e.key) {
+        case 'Enter':
+          handleSearch();
+          break;
+        case 'ArrowUp':
+          setPreSelectSuggestionIndex(arrayCycle(suggestions, 'backward'));
+          break;
+        case 'ArrowDown':
+          setPreSelectSuggestionIndex(arrayCycle(suggestions, 'forward'));
+          break;
+        case 'Tab':
+          e.shiftKey
+            ? setPreSelectEngineIndex(arrayCycle(searchEngines, 'backward'))
+            : setPreSelectEngineIndex(arrayCycle(searchEngines, 'forward'));
+          break;
+        case 'Escape':
+          closeSuggestion();
+          inputRef.current?.blur();
+          break;
+        default:
+          break;
+      }
     }
   };
 
   useEffect(() => {
     setPreSelectSuggestionIndex(0);
-  }, [suggestionsData]);
+  }, [searchContent]);
+
+  useEffect(() => {
+    setPreSelectEngineIndex(0);
+  }, [searchEngines]);
 
   return (
     <Popover
@@ -126,39 +131,57 @@ const SearchBar: React.FC = () => {
           w="full"
         >
           <InputLeftElement h="full" w="12">
-            <SearchIcon />
+            <Icon as={FiSearch} />
           </InputLeftElement>
           <Input
-            placeholder="输入并搜索"
+            placeholder="Search"
             h="16"
             px="12"
             size="lg"
-            value={searchContent}
-            onChange={(e) => setSearchContent(e.target.value)}
+            value={suggestions[preSelectSuggestionIndex]}
+            onChange={(e) => {
+              openSuggestion();
+              setSearchContent(e.target.value);
+            }}
             onKeyDown={handleKeyDown}
           />
           <InputRightElement h="full" w="12">
             <ScaleFade in={isSearching}>
               <Center cursor="pointer">
-                <CloseIcon boxSize="3" onClick={() => setSearchContent('')} />
+                <Icon
+                  as={FiX}
+                  boxSize="4"
+                  onClick={() => setSearchContent('')}
+                />
               </Center>
             </ScaleFade>
           </InputRightElement>
         </InputGroup>
       </PopoverTrigger>
-      <PopoverContent w="inherit" _focus={{ shadow: 'none', outline: '0' }}>
+      <PopoverContent
+        w="inherit"
+        _focus={{ shadow: 'none', outline: '0' }}
+        {...(!isAnyActivatedSearchEngine && { border: 'none' })}
+      >
         <PopoverBody p="0">
-          <SearchSuggestion
-            suggestions={suggestions}
-            preSelectSuggestionIndex={preSelectSuggestionIndex}
-            engines={searchEngines}
-            preSelectEngineIndex={preSelectEngineIndex}
-            isSuggestionFetching={isFetching}
-            isSearching={isSearching}
-            setPreSelectEngineIndex={setPreSelectEngineIndex}
-            setPreSelectSuggestionIndex={setPreSelectSuggestionIndex}
-            handleSearch={handleSearch}
-          />
+          {isAnyActivatedSearchEngine ? (
+            <SearchSuggestion
+              suggestions={suggestions}
+              preSelectSuggestionIndex={preSelectSuggestionIndex}
+              engines={searchEngines}
+              preSelectEngineIndex={preSelectEngineIndex}
+              isSuggestionFetching={isFetching}
+              isSearching={isSearching}
+              setPreSelectEngineIndex={setPreSelectEngineIndex}
+              setPreSelectSuggestionIndex={setPreSelectSuggestionIndex}
+              handleSearch={handleSearch}
+            />
+          ) : (
+            <Alert status="warning">
+              <AlertIcon />
+              No search engine activated
+            </Alert>
+          )}
         </PopoverBody>
       </PopoverContent>
     </Popover>

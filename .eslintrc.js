@@ -7,5 +7,8 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'prettier',
   ],
+  rules: {
+    'react/react-in-jsx-scope': 'off',
+  },
   ignorePatterns: ['/*.js'],
 };

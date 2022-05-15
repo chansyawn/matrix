@@ -1,9 +1,9 @@
 import { Container } from '@chakra-ui/react';
-import React from 'react';
 
+import Config from '@modules/layout/Config';
 import Header from '@modules/layout/Header';
 
-const Home: React.FC = () => {
+const Home = () => {
   return (
     <Container
       maxW="container.md"
@@ -12,6 +12,7 @@ const Home: React.FC = () => {
       overflow="hidden"
     >
       <Header />
+      <Config />
     </Container>
   );
 };

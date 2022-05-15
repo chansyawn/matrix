@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { getSearchSuggestion } from '@services/searchEngineSuggestion';
+import {
+  getSearchSuggestion,
+  SearchSuggestion,
+} from '@modules/search/builtInSearchEngines';
 
 export const searchApi = createApi({
   reducerPath: 'searchApi',
@@ -10,19 +13,17 @@ export const searchApi = createApi({
       string[],
       {
         keyword: string;
-        searchEngineName: string;
+        suggestion?: SearchSuggestion;
       }
     >({
-      query: ({ keyword, searchEngineName }) => {
-        const suggestion = getSearchSuggestion(searchEngineName);
+      query: ({ keyword, suggestion }) => {
         return {
-          url: suggestion.url + keyword,
+          url: getSearchSuggestion(suggestion).url + keyword,
         };
       },
-      transformResponse: (response, meta, { searchEngineName }) => {
+      transformResponse: (response, meta, { suggestion }) => {
         try {
-          const suggestion = getSearchSuggestion(searchEngineName);
-          return suggestion.transformer(response);
+          return getSearchSuggestion(suggestion).transformer(response);
         } catch (ignore) {
           return [];
         }

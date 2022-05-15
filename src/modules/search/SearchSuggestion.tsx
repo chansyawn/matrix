@@ -1,17 +1,15 @@
-import { SearchIcon } from '@chakra-ui/icons';
 import {
   Center,
   Flex,
   HStack,
-  IconButton,
-  Image,
   Kbd,
   List,
   ListItem,
   Spinner,
 } from '@chakra-ui/react';
-import { SearchEngine } from '@common/types';
-import React from 'react';
+
+import { SearchEngine } from '@modules/search/builtInSearchEngines';
+import SearchIcon from '@modules/search/SearchIcon';
 
 type SearchSuggestionProps = {
   suggestions: string[];
@@ -25,19 +23,17 @@ type SearchSuggestionProps = {
   handleSearch: () => void;
 };
 
-const SearchSuggestion: React.FC<SearchSuggestionProps> = (props) => {
-  const {
-    suggestions,
-    preSelectSuggestionIndex,
-    preSelectEngineIndex,
-    engines,
-    isSuggestionFetching,
-    isSearching,
-    setPreSelectEngineIndex,
-    setPreSelectSuggestionIndex,
-    handleSearch,
-  } = props;
-
+const SearchSuggestion = ({
+  suggestions,
+  preSelectSuggestionIndex,
+  preSelectEngineIndex,
+  engines,
+  isSuggestionFetching,
+  isSearching,
+  setPreSelectEngineIndex,
+  setPreSelectSuggestionIndex,
+  handleSearch,
+}: SearchSuggestionProps) => {
   return (
     <List
       onMouseDown={(e) => {
@@ -53,23 +49,18 @@ const SearchSuggestion: React.FC<SearchSuggestionProps> = (props) => {
         <Flex p="2">
           <HStack>
             {engines.map((engine, idx) => (
-              <IconButton
-                key={idx}
-                aria-label="Search"
-                size="md"
+              <SearchIcon
+                key={engine.id}
+                src={engine.icon}
                 shadow={idx === preSelectEngineIndex ? 'outline' : 'none'}
                 onMouseDown={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setPreSelectEngineIndex(idx);
                 }}
-                icon={
-                  <Image
-                    src={engine.icon}
-                    fallback={<SearchIcon />}
-                    boxSize="6"
-                  />
-                }
+                _hover={{
+                  borderColor: 'gray.300',
+                }}
               />
             ))}
           </HStack>
