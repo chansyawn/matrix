@@ -14,8 +14,8 @@ import {
 } from '@chakra-ui/react';
 import { FiSettings } from 'react-icons/fi';
 
-import ConfigTabPanel from '@modules/layout/ConfigTabPanel';
-import SettingPanel from '@modules/layout/SettingPanel';
+import AppearancePanel from '@modules/appearance/AppearancePanel';
+import SettingPanel from '@modules/setting/SettingPanel';
 
 const Config = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,19 +45,18 @@ const Config = () => {
       >
         <ModalOverlay />
         <ModalContent h="xl">
-          <ModalBody py="4">
+          <ModalBody py="6">
             <Tabs variant="soft-rounded">
               <TabList>
-                <Wrap>
+                <Wrap overflow="visible">
                   <Tab>⚙️ Setting</Tab>
                   <Tab>🎨 Appearance</Tab>
                   <Tab>📦 Widget</Tab>
                 </Wrap>
               </TabList>
               <TabPanels>
-                <ConfigTabPanel>
-                  <SettingPanel />
-                </ConfigTabPanel>
+                <SettingPanel />
+                <AppearancePanel />
               </TabPanels>
             </Tabs>
           </ModalBody>

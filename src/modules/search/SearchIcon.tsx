@@ -3,6 +3,7 @@ import {
   IconButton,
   IconButtonProps,
   Image,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
@@ -16,6 +17,8 @@ const SearchIcon = forwardRef<SearchIconProps, 'div'>(
   ({ src: resourceId, ...props }: SearchIconProps, ref) => {
     const [src, setSrc] = useState<string>();
 
+    const bgColor = useColorModeValue('gray.100', 'gray.800');
+
     useEffect(() => {
       getResource(resourceId ?? '').then(setSrc);
     }, [resourceId]);
@@ -24,7 +27,7 @@ const SearchIcon = forwardRef<SearchIconProps, 'div'>(
       <IconButton
         aria-label="SearchEngine"
         border="solid"
-        bgColor="white"
+        bgColor={bgColor}
         _hover={{
           borderColor: 'gray.300',
         }}

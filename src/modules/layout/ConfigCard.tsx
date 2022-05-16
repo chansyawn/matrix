@@ -15,7 +15,7 @@ type ConfigCardProps = {
 const ConfigCard = ({ title, children }: ConfigCardProps) => {
   return (
     <AccordionItem border="solid" rounded="lg" overflow="hidden">
-      <AccordionButton _focus={{ shadow: 'none' }} >
+      <AccordionButton _focus={{ shadow: 'none' }}>
         <Box flex="1" py="1" textAlign="left">
           <Heading size="sm">{title}</Heading>
         </Box>

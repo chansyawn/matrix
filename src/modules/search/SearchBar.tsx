@@ -162,6 +162,7 @@ const SearchBar = () => {
         w="inherit"
         _focus={{ shadow: 'none', outline: '0' }}
         {...(!isAnyActivatedSearchEngine && { border: 'none' })}
+        overflow="hidden"
       >
         <PopoverBody p="0">
           {isAnyActivatedSearchEngine ? (

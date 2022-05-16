@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   Spinner,
+  useColorModeValue,
 } from '@chakra-ui/react';
 
 import { SearchEngine } from '@modules/search/builtInSearchEngines';
@@ -34,6 +35,8 @@ const SearchSuggestion = ({
   setPreSelectSuggestionIndex,
   handleSearch,
 }: SearchSuggestionProps) => {
+  const bgColor = useColorModeValue('gray.200', 'gray.500');
+
   return (
     <List
       onMouseDown={(e) => {
@@ -43,7 +46,7 @@ const SearchSuggestion = ({
       cursor="pointer"
     >
       <ListItem
-        bg={0 === preSelectSuggestionIndex ? 'gray.50' : 'transparent'}
+        bgColor={0 === preSelectSuggestionIndex ? bgColor : 'transparent'}
         onMouseEnter={() => setPreSelectSuggestionIndex(0)}
       >
         <Flex p="2">
@@ -79,8 +82,8 @@ const SearchSuggestion = ({
             key={idx}
             p="2"
             fontSize="lg"
-            bg={
-              idx + 1 === preSelectSuggestionIndex ? 'gray.100' : 'transparent'
+            bgColor={
+              idx + 1 === preSelectSuggestionIndex ? bgColor : 'transparent'
             }
             onMouseEnter={() => setPreSelectSuggestionIndex(idx + 1)}
           >
