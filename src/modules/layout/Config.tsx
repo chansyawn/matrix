@@ -12,12 +12,14 @@ import {
   useDisclosure,
   Wrap,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { FiSettings } from 'react-icons/fi';
 
 import AppearancePanel from '@modules/appearance/AppearancePanel';
 import SettingPanel from '@modules/setting/SettingPanel';
 
 const Config = () => {
+  const { t } = useTranslation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalSize = useBreakpointValue({
     base: 'xs',
@@ -49,9 +51,9 @@ const Config = () => {
             <Tabs variant="soft-rounded">
               <TabList>
                 <Wrap overflow="visible">
-                  <Tab>⚙️ Setting</Tab>
-                  <Tab>🎨 Appearance</Tab>
-                  <Tab>📦 Widget</Tab>
+                  <Tab>⚙️ {t`tab.setting`}</Tab>
+                  <Tab>🎨 {t`tab.appearance`}</Tab>
+                  <Tab>📦 {t`tab.widget`}</Tab>
                 </Wrap>
               </TabList>
               <TabPanels>

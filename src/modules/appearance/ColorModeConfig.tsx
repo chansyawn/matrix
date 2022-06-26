@@ -1,7 +1,9 @@
 import { Select, useColorMode } from '@chakra-ui/react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ColorModeConfig = () => {
+  const { t } = useTranslation();
   const [isSystem, setIsSystem] = useState(
     localStorage.getItem('chakra-ui-color-mode') === undefined,
   );
@@ -21,9 +23,9 @@ const ColorModeConfig = () => {
 
   return (
     <Select value={isSystem ? 'system' : colorMode} onChange={handleChange}>
-      <option value="system">💻 system </option>
-      <option value="light">☀️ light</option>
-      <option value="dark">🌑 dark</option>
+      <option value="system">💻 {t`color.system`} </option>
+      <option value="light">☀️ {t`color.light`}</option>
+      <option value="dark">🌑 {t`color.dark`}</option>
     </Select>
   );
 };

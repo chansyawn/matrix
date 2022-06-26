@@ -1,5 +1,6 @@
 import { Heading, Icon, Square, Wrap } from '@chakra-ui/react';
 import { useDrop } from 'react-dnd';
+import { useTranslation } from 'react-i18next';
 import { FiPlus } from 'react-icons/fi';
 
 import { useDispatch, useSelector } from '@common/hooks';
@@ -12,6 +13,7 @@ import {
 } from '@modules/search/searchSlice';
 
 const SearchConfigActivatedEngine = () => {
+  const { t } = useTranslation();
   const activatedSearchEngines = useSelector(selectActivatedSearchEngines);
   const dispatch = useDispatch();
 
@@ -24,7 +26,7 @@ const SearchConfigActivatedEngine = () => {
 
   return (
     <>
-      <Heading size="xs">Activated</Heading>
+      <Heading size="xs">{t`search.activated`}</Heading>
       <Wrap>
         {activatedSearchEngines.map((engine) => (
           <SearchConfigActivatedEngineItem key={engine.id} engine={engine} />

@@ -1,0 +1,34 @@
+{
+  "tab": {
+    "setting": "Setting",
+    "appearance": "Appearance",
+    "widget": "Widget"
+  },
+  "language": {
+    "title": "Language"
+  },
+  "search": {
+    "title": "Search",
+    "activated": "Activated",
+    "unactivated": "unActivated",
+    "custom": "Custom Search",
+    "name": "Name",
+    "url": "URL",
+    "icon": "icon",
+    "submit": "Submit"
+  },
+  "color": {
+    "title": "Color Mode",
+    "system": "system",
+    "light": "light",
+    "dark": "dark"
+  },
+  "iconEditor": {
+    "title": "Icon Editor",
+    "color": "Color",
+    "text": "Text",
+    "preview": "Preview",
+    "textIcon": "Text Icon",
+    "imageIcon": "Image Icon"
+  }
+}

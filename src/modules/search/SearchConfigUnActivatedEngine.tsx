@@ -1,5 +1,6 @@
 import { Heading, Icon, Square, Wrap } from '@chakra-ui/react';
 import { useDrop } from 'react-dnd';
+import { useTranslation } from 'react-i18next';
 import { FiMinus } from 'react-icons/fi';
 
 import { useDispatch, useSelector } from '@common/hooks';
@@ -12,6 +13,7 @@ import {
 } from '@modules/search/searchSlice';
 
 const SearchConfigUnActivatedEngine = () => {
+  const { t } = useTranslation();
   const unActivatedEngines = useSelector(selectUnActivatedSearchEngines);
   const dispatch = useDispatch();
 
@@ -24,7 +26,7 @@ const SearchConfigUnActivatedEngine = () => {
 
   return (
     <>
-      <Heading size="xs">UnActivated</Heading>
+      <Heading size="xs">{t`search.unactivated`}</Heading>
       <Wrap>
         {unActivatedEngines.map((engine) => (
           <SearchConfigEngineItem

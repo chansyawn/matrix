@@ -9,6 +9,7 @@ import {
   RadioGroup,
 } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import ImageIconEditor from '@common/components/IconCreator/ImageIconEditor';
 import TextIconEditor from '@common/components/IconCreator/TextIconEditor';
@@ -21,6 +22,7 @@ type IconEditorProps = {
 };
 
 const IconEditor = ({ setIcon, onClose }: IconEditorProps) => {
+  const { t } = useTranslation();
   const [iconType, setIconType] = useState<'text' | 'image'>('text');
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -34,7 +36,7 @@ const IconEditor = ({ setIcon, onClose }: IconEditorProps) => {
 
   return (
     <>
-      <ModalHeader py="3">Icon Editor</ModalHeader>
+      <ModalHeader py="3">{t`iconEditor.title`}</ModalHeader>
       <ModalCloseButton />
       <ModalBody ref={modalRef}>
         <RadioGroup
@@ -43,8 +45,8 @@ const IconEditor = ({ setIcon, onClose }: IconEditorProps) => {
           mb="4"
         >
           <HStack>
-            <Radio value="text">Simple</Radio>
-            <Radio value="image">Custom</Radio>
+            <Radio value="text">{t`iconEditor.textIcon`}</Radio>
+            <Radio value="image">{t`iconEditor.imageIcon`}</Radio>
           </HStack>
         </RadioGroup>
         {iconType === 'text' && (

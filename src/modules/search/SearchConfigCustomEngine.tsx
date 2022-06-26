@@ -7,6 +7,7 @@ import {
   Input,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import IconCreator from '@common/components/IconCreator';
 import { useDispatch } from '@common/hooks';
@@ -19,6 +20,7 @@ type CustomEngineFormFields = {
 };
 
 const SearchConfigCustomEngine = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const {
     register,
@@ -43,10 +45,10 @@ const SearchConfigCustomEngine = () => {
 
   return (
     <>
-      <Heading size="xs">Custom Search Engine</Heading>
+      <Heading size="xs">{t`search.custom`}</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={Boolean(errors.name)}>
-          <FormLabel>name</FormLabel>
+          <FormLabel>{t`search.name`}</FormLabel>
           <Input
             autoComplete="off"
             {...register('name', {
@@ -58,7 +60,7 @@ const SearchConfigCustomEngine = () => {
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={Boolean(errors.url)}>
-          <FormLabel>url</FormLabel>
+          <FormLabel>{t`search.url`}</FormLabel>
           <Input
             autoComplete="off"
             {...register('url', {
@@ -77,7 +79,7 @@ const SearchConfigCustomEngine = () => {
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={Boolean(errors.icon)}>
-          <FormLabel>icon</FormLabel>
+          <FormLabel>{t`search.icon`}</FormLabel>
           <IconCreator
             name="icon"
             control={control}
@@ -87,7 +89,7 @@ const SearchConfigCustomEngine = () => {
           />
         </FormControl>
         <Button mt={4} type="submit">
-          Submit
+          {t`search.submit`}
         </Button>
       </form>
     </>

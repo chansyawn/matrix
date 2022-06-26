@@ -1,0 +1,34 @@
+{
+  "tab": {
+    "setting": "设置",
+    "appearance": "个性化",
+    "widget": "组件"
+  },
+  "language": {
+    "title": "语言"
+  },
+  "search": {
+    "title": "搜索",
+    "activated": "已激活",
+    "unactivated": "未激活",
+    "custom": "自定义搜索",
+    "name": "名称",
+    "url": "URL",
+    "icon": "图标",
+    "submit": "提交"
+  },
+  "color": {
+    "title": "颜色模式",
+    "system": "跟随系统",
+    "light": "浅色",
+    "dark": "深色"
+  },
+  "iconEditor": {
+    "title": "编辑图标",
+    "color": "颜色",
+    "text": "文本",
+    "preview": "预览",
+    "textIcon": "文字图标",
+    "imageIcon": "图像图标"
+  }
+}

@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
+import { useTranslation } from 'react-i18next';
 
 import { canvasTextPreview } from '@common/components/IconCreator/IconCanvasPreview';
 import IconPreview from '@common/components/IconCreator/IconPreview';
@@ -30,6 +31,7 @@ const TextIconEditor = ({
   previewCanvasRef,
   modalRef,
 }: TextIconEditorProps) => {
+  const { t } = useTranslation();
   const [text, setText] = useState('');
   const [color, setColor] = useState('#ffffff');
 
@@ -53,15 +55,15 @@ const TextIconEditor = ({
 
   return (
     <>
-      <FormLabel>Preview</FormLabel>
+      <FormLabel>{t`iconEditor.title`}</FormLabel>
       <IconPreview canvasRef={previewCanvasRef} />
-      <FormLabel>Text</FormLabel>
+      <FormLabel>{t`iconEditor.text`}</FormLabel>
       <Input
         value={text}
         autoComplete="off"
         onChange={(e) => setText(e.target.value)}
       />
-      <FormLabel>Color</FormLabel>
+      <FormLabel>{t`iconEditor.color`}</FormLabel>
       <Popover placement="top-start">
         <PopoverTrigger>
           <Square
